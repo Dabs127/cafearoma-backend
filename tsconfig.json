@@ -1,11 +1,14 @@
 {
-  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "target": "ES2020",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["ES2020"],
     "esModuleInterop": true,
+    "moduleDetection": "force",
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
