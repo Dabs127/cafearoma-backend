@@ -1,4 +1,4 @@
-import { Promotion } from "#models/Promotion.js";
+import { Promotion } from "../models/Promotion.js";
 import { Request, Response } from "express";
 
 export const getPromotions = async (req: Request, res: Response) => {

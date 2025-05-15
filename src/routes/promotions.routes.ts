@@ -1,4 +1,4 @@
-import { getPromotions } from "#controllers/promotions.controller.js";
+import { getPromotions } from "../controllers/promotions.controller.js";
 import Router from "express";
 
 const router = Router();

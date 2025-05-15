@@ -1,4 +1,4 @@
-import { getItems } from "#controllers/items.controller.js";
+import { getItems } from "../controllers/items.controller.js";
 import Router from "express";
 
 const router = Router();
