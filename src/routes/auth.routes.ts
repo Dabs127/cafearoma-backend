@@ -1,4 +1,4 @@
-import { LoginUser, RegisterUser } from "#controllers/users.controller.js";
+import { LoginUser, RegisterUser } from "../controllers/users.controller.js";
 import { Router } from "express";
 import { catchAsync } from "../utils/catchAsync.js";
 
