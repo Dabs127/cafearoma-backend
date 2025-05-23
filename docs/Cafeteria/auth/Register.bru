@@ -1,0 +1,21 @@
+meta {
+  name: Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url_development}}api/auth/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "Ivan Ferret La Mole",
+    "email": "mole@gmail.com",
+    "password": "123456",
+    "phone": "8117239577",
+    "role": "pepito"
+  }
+}
