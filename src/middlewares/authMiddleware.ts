@@ -16,21 +16,9 @@ const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
-  let token: string | undefined;
-  const authHeader = req.headers.Authorization ?? req.headers.authorization;
-  console.log(req.cookies.access_token);
+  const token: string = req.cookies.access_token as string;
 
-  if (typeof authHeader === "string" && authHeader.startsWith("Bearer")) {
-    token = authHeader.split(" ")[1];
-
-    if (!token) {
-      console.log("Entro aqui");
-      res.status(401).json({
-        message: "No token, authorization denied",
-      });
-      return;
-    }
-
+  if (token) {
     try {
       const decode = jwt.verify(token, secretKey) as JwtUserPayload;
       req.user = decode;

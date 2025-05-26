@@ -49,14 +49,18 @@ export const loginUser = async (
     });
 
     if (!existingUser) {
-      return res.status(404).json({ message: "Usuario no existe" });
+      res
+        .status(404)
+        .json({ success: false, message: "Correo o contraseña incorrectos" });
+      return;
     }
 
     const isMatch = await bcrypt.compare(password, existingUser.password);
 
     if (!isMatch) {
       res.status(400).json({
-        message: "Invalid credentials",
+        success: false,
+        message: "Correo o contraseña incorrectos",
       });
     }
   } catch {
@@ -93,6 +97,7 @@ export const loginUser = async (
   console.log(token);
 
   res.cookie("access_token", token, {
+    path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -100,6 +105,7 @@ export const loginUser = async (
   });
 
   res.cookie("refresh_token", refresh_token, {
+    path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -111,6 +117,7 @@ export const loginUser = async (
     data: {
       userId: existingUser._id,
       email: existingUser.email,
+      message: "Inicio de sesión correcto",
     },
   });
 };
@@ -124,6 +131,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
   if (userExist) {
     res.status(409).json({
+      success: false,
       data: {
         message: "Email already in use",
       },
@@ -144,6 +152,7 @@ export const registerUser = async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Error creating user:", err);
     res.status(400).json({
+      success: false,
       data: {
         message: "User couldn't be created",
       },
@@ -173,6 +182,7 @@ export const registerUser = async (req: Request, res: Response) => {
     );
   } catch {
     res.status(400).json({
+      false: false,
       data: {
         message: "Token could not be setted.",
       },
@@ -199,7 +209,7 @@ export const registerUser = async (req: Request, res: Response) => {
   res.status(201).json({
     success: true,
     data: {
-      message: "User registered",
+      message: "Usuario creado correctamente",
       userId: newUser.id as number,
       email: newUser.email,
     },
@@ -218,6 +228,7 @@ export const logoutUser = (req: Request, res: Response) => {
 };
 
 export const refreshToken = (req: Request, res: Response) => {
+  console.log("Refreshing token...");
   const token = req.cookies.refresh_token as string;
   if (!token) {
     res.status(401).json({
@@ -243,6 +254,7 @@ export const refreshToken = (req: Request, res: Response) => {
     );
 
     res.cookie("access_token", newAccessToken, {
+      path: "/",
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
       sameSite: "lax",
@@ -269,6 +281,8 @@ export const getSession = (req: AuthenticatedRequest, res: Response) => {
   }
 
   const { id, email, role } = req.user;
+
+  console.log(req.user);
 
   res.json({
     authenticated: true,
