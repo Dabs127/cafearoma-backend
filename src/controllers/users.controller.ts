@@ -62,6 +62,7 @@ export const loginUser = async (
         success: false,
         message: "Correo o contraseña incorrectos",
       });
+      return;
     }
   } catch {
     const error = new Error("Error!");
@@ -79,7 +80,7 @@ export const loginUser = async (
         role: existingUser.role,
       },
       secretKey,
-      { expiresIn: "1m" }
+      { expiresIn: "1h" }
     );
     refresh_token = jwt.sign(
       {
@@ -88,6 +89,8 @@ export const loginUser = async (
       secretKey,
       { expiresIn: "30d" }
     );
+
+    console.log("Token generated:", token);
   } catch (err) {
     console.error(err);
     const error = new Error("Error!");
@@ -100,7 +103,7 @@ export const loginUser = async (
     path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: 1000 * 60 * 60,
   });
 
@@ -108,8 +111,8 @@ export const loginUser = async (
     path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    sameSite: "lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
   res.status(200).json({
@@ -190,7 +193,6 @@ export const registerUser = async (req: Request, res: Response) => {
 
     return;
   }
-  console.log(token);
 
   res.cookie("access_token", token, {
     httpOnly: true,
@@ -227,7 +229,7 @@ export const logoutUser = (req: Request, res: Response) => {
     });
 };
 
-export const refreshToken = (req: Request, res: Response) => {
+export const refreshToken = async (req: Request, res: Response) => {
   console.log("Refreshing token...");
   const token = req.cookies.refresh_token as string;
   if (!token) {
@@ -241,11 +243,16 @@ export const refreshToken = (req: Request, res: Response) => {
 
   try {
     const payload = jwt.verify(token, secretKey) as JwtUserPayload;
+    // console.log("Payload:", payload);
+    const user = await User.findOne({
+      email: payload.email,
+    });
+
     const newAccessToken = jwt.sign(
       {
-        email: payload.email,
-        role: payload.role,
-        userId: payload.id,
+        email: user?.email,
+        role: user?.role,
+        userId: user?._id,
       },
       secretKey,
       {
@@ -282,12 +289,12 @@ export const getSession = (req: AuthenticatedRequest, res: Response) => {
 
   const { id, email, role } = req.user;
 
-  console.log(req.user);
+  // console.log("User session:", req.user);
 
   res.json({
     authenticated: true,
     userId: id,
     email,
-    role,
+    role: role,
   });
 };
