@@ -11,7 +11,10 @@ router.use("/promotions", promotionsRouter);
 router.use("/auth", authRouter);
 
 router.use("/", (req, res) => {
-  res.send("Welcome to the API");
+  console.log("Cookies en /api/debug-cookies:", req.cookies);
+
+  res.json({ cookies: req.cookies as string });
+  // res.send("Welcome to the API");
 });
 
 export default router;

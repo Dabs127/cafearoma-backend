@@ -7,6 +7,7 @@ import { CreateItemDto } from "#types/Items.js";
 
 export const getItems: RequestHandler = async (req: Request, res: Response) => {
   try {
+    console.log("Get Items cookies:", req.cookies);
     const items = await Item.find({});
     res.status(200).json({
       items: items,
@@ -22,6 +23,8 @@ export const postItem: RequestHandler = async (
   res: Response
 ) => {
   try {
+    console.log("Cookies en postItem:", req.cookies);
+    console.log("Content-Type:", req.headers["content-type"]);
     const fileBuffer = req.file?.buffer;
     if (!fileBuffer) {
       throw Error();
