@@ -8,7 +8,9 @@ export const getPromotions = async (req: Request, res: Response) => {
   try {
     const promotions = await Promotion.find({});
     console.log(promotions);
-    res.json(promotions);
+    res.status(200).json({
+      promotions,
+    });
   } catch (error) {
     console.error("Error fetching promotions:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -33,6 +35,7 @@ export const postPromotion: RequestHandler = async (
       shortDescription: req.body.shortDescription,
       imgUrl: urlImage,
       title: req.body.title,
+      authenticationRequired: req.body.authenticationRequired,
       startDate: req.body.startDate,
     });
 

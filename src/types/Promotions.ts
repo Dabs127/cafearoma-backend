@@ -4,5 +4,6 @@ export interface CreatePromotionDto {
   longDescription: string;
   shortDescription: string;
   startDate: Date;
+  authenticationRequired: boolean;
   title: string;
 }

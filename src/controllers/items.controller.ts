@@ -10,7 +10,7 @@ export const getItems: RequestHandler = async (req: Request, res: Response) => {
     console.log("Get Items cookies:", req.cookies);
     const items = await Item.find({});
     res.status(200).json({
-      items: items,
+      items,
     });
   } catch (error) {
     console.error("Error fetching items:", error);
