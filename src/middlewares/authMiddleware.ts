@@ -17,8 +17,8 @@ const verifyToken = (
   next: NextFunction
 ) => {
   const token: string = req.cookies.access_token as string;
-  console.log(token);
-  console.log(req.cookies);
+  // console.log(token);
+  // console.log(req.cookies);
   if (token) {
     try {
       const decode = jwt.verify(token, secretKey) as JwtUserPayload;
