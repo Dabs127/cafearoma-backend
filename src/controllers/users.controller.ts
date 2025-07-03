@@ -7,6 +7,7 @@ import {
   AuthenticatedRequest,
   JwtUserPayload,
 } from "#types/AuthenticatedRequest.js";
+import { UpdateUserBody } from "#types/Users.js";
 
 interface LoginBody {
   email: string;
@@ -90,14 +91,14 @@ export const loginUser = async (
       { expiresIn: "30d" }
     );
 
-    console.log("Token generated:", token);
+    // console.log("Token generated:", token);
   } catch (err) {
     console.error(err);
     const error = new Error("Error!");
     next(error);
     return;
   }
-  console.log(token);
+  // console.log(token);
 
   res.cookie("access_token", token, {
     path: "/",
@@ -219,14 +220,18 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 export const logoutUser = (req: Request, res: Response) => {
-  res
-    .clearCookie("access_token")
-    .status(200)
-    .json({
-      data: {
-        message: "Session closed successfully",
-      },
-    });
+  try {
+    res
+      .clearCookie("refresh_token")
+      .clearCookie("access_token")
+      .status(200)
+      .json({
+        success: true,
+        message: "User logged out successfully",
+      });
+  } catch (err) {
+    console.error("el error es este: ", err);
+  }
 };
 
 export const refreshToken = async (req: Request, res: Response) => {
@@ -297,4 +302,89 @@ export const getSession = (req: AuthenticatedRequest, res: Response) => {
     email,
     role: role,
   });
+};
+
+export const getUserById = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.user) {
+    res.status(401).json({ authenticated: false });
+    return;
+  }
+
+  const { userId } = req.user;
+  console.log("Fetching user by ID:", userId);
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ success: false, message: "Unauthorized" });
+      return;
+    }
+
+    const { userId } = req.user;
+    const { name, email, phone } = req.body as UpdateUserBody;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username: name, email, phone },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      res.status(404).json({ success: false, message: "User not found" });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+  return;
+};
+
+export const deleteUser = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ success: false, message: "Unauthorized" });
+      return;
+    }
+
+    const { userId } = req.user;
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      res.status(404).json({ success: false, message: "User not found" });
+      return;
+    }
+
+    res
+      .clearCookie("refresh_token")
+      .clearCookie("access_token")
+      .status(200)
+      .json({
+        success: true,
+        message: "User deleted successfully",
+      });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };

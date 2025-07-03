@@ -1,6 +1,7 @@
 import {
   getSession,
   loginUser,
+  logoutUser,
   refreshToken,
   registerUser,
 } from "../controllers/users.controller.js";
@@ -12,6 +13,7 @@ const router = Router();
 
 router.post("/login", loginUser);
 router.post("/register", registerUser);
+router.post("/logout", logoutUser);
 router.post("/refresh", refreshToken);
 router.get("/session", verifyToken, getSession);
 
