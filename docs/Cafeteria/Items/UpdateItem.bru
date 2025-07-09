@@ -1,0 +1,19 @@
+meta {
+  name: UpdateItem
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{url_development}}api/items
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  id: 686826a8f827a62091378ac5
+  image: @file(/home/diego/Pictures/firewatch.jpg)
+  price: 99
+  ~category: postres
+  ~description: Lonchesito de crema con fresa
+}
