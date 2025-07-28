@@ -13,3 +13,7 @@ export interface UpdateUserBody {
   email?: string;
   phone?: string;
 }
+
+export interface ForgotUserPasswordDto {
+  email: string;
+}
