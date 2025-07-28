@@ -3,11 +3,14 @@ import { User } from "../models/Users.js";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import {
   AuthenticatedRequest,
   JwtUserPayload,
 } from "#types/AuthenticatedRequest.js";
-import { UpdateUserBody } from "#types/Users.js";
+import { ForgotUserPasswordDto, UpdateUserBody } from "#types/Users.js";
+import { ResetToken } from "#models/ResetTokens.js";
+import { mailTemplate, sendEmail } from "#utils/email.js";
 
 interface LoginBody {
   email: string;
@@ -386,5 +389,117 @@ export const deleteUser = async (req: AuthenticatedRequest, res: Response) => {
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const forgotPassword = async (
+  req: Request<unknown, unknown, ForgotUserPasswordDto>,
+  res: Response
+) => {
+  try {
+    const email: string = req.body.email;
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      res.json({
+        success: false,
+        message: "Your are not registered!",
+      });
+    } else {
+      const token = crypto.randomBytes(20).toString("hex");
+      const hashedToken = crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+
+      await ResetToken.updateOne(
+        { user_id: user._id },
+        { token: hashedToken, expires_at: new Date(Date.now() + 3600000) },
+        { upsert: true }
+      );
+
+      const mailOption = {
+        email: user.email,
+        subject: "Password Reset Request",
+        message: mailTemplate(
+          "You have requested a password reset. Click the button below to reset your password.",
+          `${process.env.FRONTEND_URL ?? ""}/reset-password?id=${user._id.toString()}&token=${token}`,
+          "Reset Password"
+        ),
+      };
+
+      await sendEmail(mailOption);
+
+      res.status(200).json({
+        success: true,
+        message: "We sent you a password reset email.",
+      });
+    }
+  } catch (error) {
+    console.error("Error in forgotPassword:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while processing your request.",
+    });
+    return;
+  }
+};
+
+export const resetPassword = async (
+  req: Request<
+    unknown,
+    unknown,
+    { password: string; confirm_password: string }
+  >,
+  res: Response
+) => {
+  try {
+    const { id, token } = req.query;
+    const { password } = req.body;
+
+    console.log(req.query);
+    console.log("Resetting password for user:", id);
+    console.log("Reset token:", token);
+
+    if (!id || !token) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid request parameters.",
+      });
+      return;
+    }
+
+    const resetToken = await ResetToken.findOne({
+      user_id: id,
+      token: crypto
+        .createHash("sha256")
+        .update(token as string)
+        .digest("hex"),
+    });
+
+    console.log("Found reset token:", resetToken);
+
+    if (!resetToken || resetToken.expires_at < new Date()) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token.",
+      });
+      return;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.updateOne({ _id: id }, { password: hashedPassword });
+    await ResetToken.deleteOne({ _id: resetToken._id });
+
+    res.status(200).json({
+      success: true,
+      message: "Password has been reset successfully.",
+    });
+  } catch (error) {
+    console.error("Error in resetPassword:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while resetting the password.",
+    });
   }
 };
