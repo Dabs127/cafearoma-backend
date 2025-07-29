@@ -503,3 +503,32 @@ export const resetPassword = async (
     });
   }
 };
+
+export const sendEmailToAdmin = async (req: Request, res: Response) => {
+  try {
+    const { email, name, message } = req.body as {
+      email: string;
+      name: string;
+      message: string;
+    };
+
+    const mailOption = {
+      email: process.env.ADMIN_EMAIL ?? "dabsserna@gmail.com",
+      subject: `Mensaje de usuario desde el sitio web - ${name}`,
+      message: `Email from: ${email}<br><br>${message}`,
+    };
+
+    await sendEmail(mailOption);
+
+    res.status(200).json({
+      success: true,
+      message: "Email sent successfully.",
+    });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while sending the email.",
+    });
+  }
+};
