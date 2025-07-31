@@ -12,7 +12,7 @@ import { uploadImage } from "#utils/uploadToCloudinary.js";
 export const getPromotions = async (req: Request, res: Response) => {
   try {
     const promotions = await Promotion.find({});
-    console.log(promotions);
+    // console.log(promotions);
     res.status(200).json({
       promotions,
     });
@@ -160,9 +160,9 @@ export const updatePromotion: RequestHandler = async (
     await Promotion.findByIdAndUpdate(id, updates);
 
     res.status(201).json({
+      success: true,
       message: "Promoción actualizado exitosamente",
     });
-    return;
   } catch (error) {
     console.error("Error creating item:", error);
     res
