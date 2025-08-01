@@ -1,0 +1,19 @@
+meta {
+  name: GetItems
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url_development}}api/items
+  body: none
+  auth: bearer
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODJiNGFhNmVlNmYwMWYwZjc2NzE2NWYiLCJlbWFpbCI6ImRhbnlAZ21haWwuY29tIiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJpYXQiOjE3NDc2ODI3NTEsImV4cCI6MTc0NzY4NjM1MX0.BNboT5LD1smFZGahCMfxUTxHyyK10kW3RTXoYIyWyU4
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODJiNGFhNmVlNmYwMWYwZjc2NzE2NWYiLCJlbWFpbCI6ImRhbnlAZ21haWwuY29tIiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJpYXQiOjE3NDc4Njk4MzEsImV4cCI6MTc0Nzg2OTg5MX0.OJWdHqfkupSvmU3CDiLUIWGv3HKrr7wngbBiiUrY2YA
+}

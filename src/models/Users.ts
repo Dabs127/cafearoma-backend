@@ -1,12 +1,9 @@
-import { model, Schema } from "mongoose";
+import { BaseUser } from "../types/BaseUser.js";
+import mongoose, { model, Schema } from "mongoose";
 
-interface IUser {
+interface IUser extends BaseUser {
   created_at: Date;
-  email: string;
-  password: string;
-  phone_number: string;
-  role: string;
-  username: string;
+  _id: mongoose.Types.ObjectId;
 }
 
 const UserSchema = new Schema({
@@ -19,7 +16,7 @@ const UserSchema = new Schema({
     required: true,
     type: String,
   },
-  phone_number: String,
+  phone: String,
   role: {
     required: true,
     type: String,

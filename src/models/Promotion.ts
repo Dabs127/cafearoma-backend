@@ -7,6 +7,7 @@ interface IPromotion {
   longDescription: string;
   shortDescription: string;
   startDate: Date;
+  authenticationRequired: boolean;
   title: string;
 }
 
@@ -30,6 +31,10 @@ const PromotionSchema = new Schema({
   startDate: {
     required: true,
     type: Date,
+  },
+  authenticationRequired: {
+    required: true,
+    type: Boolean,
   },
   title: {
     required: true,
