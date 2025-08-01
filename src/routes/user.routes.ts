@@ -3,8 +3,8 @@ import {
   getUserById,
   sendEmailToAdmin,
   updateUser,
-} from "#controllers/users.controller.js";
-import verifyToken from "#middlewares/authMiddleware.js";
+} from "../controllers/users.controller.js";
+import verifyToken from "../middlewares/authMiddleware.js";
 import { Router } from "express";
 
 const router = Router();

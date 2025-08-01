@@ -1,5 +1,5 @@
 import { UploadApiResponse } from "cloudinary";
-import cloudinary from "#config/cloudinary.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const uploadImage = async (
   fileBuffer: Buffer,

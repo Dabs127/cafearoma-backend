@@ -2,12 +2,12 @@ import {
   CreatePromotionDto,
   DeleteIdPromotion,
   UpdatePromotionDto,
-} from "#types/Promotions.js";
+} from "../types/Promotions.js";
 import { UploadApiResponse } from "cloudinary";
 import { Promotion } from "../models/Promotion.js";
 import { Request, RequestHandler, Response } from "express";
-import cloudinary from "#config/cloudinary.js";
-import { uploadImage } from "#utils/uploadToCloudinary.js";
+import cloudinary from "../config/cloudinary.js";
+import { uploadImage } from "../utils/uploadToCloudinary.js";
 
 export const getPromotions = async (req: Request, res: Response) => {
   try {

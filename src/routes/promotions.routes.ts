@@ -1,5 +1,5 @@
-import verifyToken from "#middlewares/authMiddleware.js";
-import authorizeRoles from "#middlewares/roleMiddleware.js";
+import verifyToken from "../middlewares/authMiddleware.js";
+import authorizeRoles from "../middlewares/roleMiddleware.js";
 import {
   deletePromotion,
   getPromotionById,

@@ -1,4 +1,4 @@
-import { AuthenticatedRequest } from "#types/AuthenticatedRequest.js";
+import { AuthenticatedRequest } from "../types/AuthenticatedRequest.js";
 import { NextFunction, Response } from "express";
 
 const authorizeRoles = (...allowedRoles: string[]) => {

@@ -1,5 +1,5 @@
 import verifyToken from "../middlewares/authMiddleware.js";
-import authorizeRoles from "#middlewares/roleMiddleware.js";
+import authorizeRoles from "../middlewares/roleMiddleware.js";
 import { upload } from "../middlewares/upload.js";
 import {
   deleteItem,
