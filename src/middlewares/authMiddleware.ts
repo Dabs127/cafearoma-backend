@@ -1,7 +1,7 @@
 import {
   AuthenticatedRequest,
   JwtUserPayload,
-} from "#types/AuthenticatedRequest.js";
+} from "../types/AuthenticatedRequest.js";
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 

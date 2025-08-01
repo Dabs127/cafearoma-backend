@@ -1,9 +1,9 @@
 // import { AuthenticatedRequest } from "#types/AuthenticatedRequest.js";
 import { Item } from "../models/Item.js";
 import { Request, RequestHandler, Response } from "express";
-import { CreateItemDto, DeleteIdItem, UpdateItemDto } from "#types/Items.js";
-import { uploadImage } from "#utils/uploadToCloudinary.js";
-import cloudinary from "#config/cloudinary.js";
+import { CreateItemDto, DeleteIdItem, UpdateItemDto } from "../types/Items.js";
+import { uploadImage } from "../utils/uploadToCloudinary.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const getItems: RequestHandler = async (req: Request, res: Response) => {
   try {

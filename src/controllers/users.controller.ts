@@ -7,10 +7,10 @@ import crypto from "crypto";
 import {
   AuthenticatedRequest,
   JwtUserPayload,
-} from "#types/AuthenticatedRequest.js";
-import { ForgotUserPasswordDto, UpdateUserBody } from "#types/Users.js";
-import { ResetToken } from "#models/ResetTokens.js";
-import { mailTemplate, sendEmail } from "#utils/email.js";
+} from "../types/AuthenticatedRequest.js";
+import { ForgotUserPasswordDto, UpdateUserBody } from "../types/Users.js";
+import { ResetToken } from "../models/ResetTokens.js";
+import { mailTemplate, sendEmail } from "../utils/email.js";
 
 interface LoginBody {
   email: string;
