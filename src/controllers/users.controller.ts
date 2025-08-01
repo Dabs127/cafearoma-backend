@@ -369,9 +369,9 @@ export const deleteUser = async (req: AuthenticatedRequest, res: Response) => {
       return;
     }
 
-    const { userId } = req.user;
+    const { id } = req.user;
 
-    const deletedUser = await User.findByIdAndDelete(userId);
+    const deletedUser = await User.findByIdAndDelete(id);
 
     if (!deletedUser) {
       res.status(404).json({ success: false, message: "User not found" });
