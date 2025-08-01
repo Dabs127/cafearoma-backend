@@ -313,11 +313,11 @@ export const getUserById = async (req: AuthenticatedRequest, res: Response) => {
     return;
   }
 
-  const { userId } = req.user;
-  console.log("Fetching user by ID:", userId);
+  const { id } = req.user;
+  console.log("Fetching user by ID:", id);
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
@@ -336,11 +336,11 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
       return;
     }
 
-    const { userId } = req.user;
+    const { id } = req.user;
     const { name, email, phone } = req.body as UpdateUserBody;
 
     const updatedUser = await User.findByIdAndUpdate(
-      userId,
+      id,
       { username: name, email, phone },
       { new: true }
     );
