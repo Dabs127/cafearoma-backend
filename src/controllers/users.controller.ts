@@ -313,11 +313,11 @@ export const getUserById = async (req: AuthenticatedRequest, res: Response) => {
     return;
   }
 
-  const { id } = req.user;
-  console.log("Fetching user by ID:", id);
+  const { userId } = req.user;
+  console.log("Fetching user by ID:", userId);
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(userId);
     console.log(user)
     if (!user) {
       res.status(404).json({ message: "User not found" });
@@ -337,11 +337,11 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
       return;
     }
 
-    const { id } = req.user;
+    const { userId } = req.user;
     const { name, email, phone } = req.body as UpdateUserBody;
 
     const updatedUser = await User.findByIdAndUpdate(
-      id,
+      userId,
       { username: name, email, phone },
       { new: true }
     );
@@ -370,9 +370,9 @@ export const deleteUser = async (req: AuthenticatedRequest, res: Response) => {
       return;
     }
 
-    const { id } = req.user;
+    const { userId } = req.user;
 
-    const deletedUser = await User.findByIdAndDelete(id);
+    const deletedUser = await User.findByIdAndDelete(userId);
 
     if (!deletedUser) {
       res.status(404).json({ success: false, message: "User not found" });
