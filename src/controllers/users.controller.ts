@@ -107,7 +107,7 @@ export const loginUser = async (
     path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 1000 * 60 * 60,
   });
 
@@ -115,7 +115,7 @@ export const loginUser = async (
     path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
@@ -201,14 +201,14 @@ export const registerUser = async (req: Request, res: Response) => {
   res.cookie("access_token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 1000 * 60 * 60,
   });
 
   res.cookie("refresh_token", refresh_token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
@@ -272,7 +272,7 @@ export const refreshToken = async (req: Request, res: Response) => {
       path: "/",
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
-      sameSite: "lax",
+      sameSite: "none",
       secure: process.env.NODE_ENV === "production",
     });
     res.status(200).json({
