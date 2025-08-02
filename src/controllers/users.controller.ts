@@ -295,13 +295,13 @@ export const getSession = (req: AuthenticatedRequest, res: Response) => {
     return;
   }
 
-  const { id, email, role } = req.user;
+  const { userId, email, role } = req.user;
 
   // console.log("User session:", req.user);
 
   res.json({
     authenticated: true,
-    userId: id,
+    userId: userId,
     email,
     role: role,
   });
