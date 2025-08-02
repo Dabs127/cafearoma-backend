@@ -317,7 +317,8 @@ export const getUserById = async (req: AuthenticatedRequest, res: Response) => {
   console.log("Fetching user by ID:", id);
 
   try {
-    const user = await User.findById({userId: id});
+    const user = await User.findById(id);
+    console.log(user)
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
