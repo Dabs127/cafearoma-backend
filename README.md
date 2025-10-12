@@ -1,62 +1,51 @@
 # Café Aroma Backend
 
-API RESTful para la aplicación web **Café Aroma**.  
-Maneja la lógica del negocio, autenticación y autorización de usuarios, consumo de APIs externas (Cloudinary), y persistencia de datos en MongoDB.
+RESTful API for the **Café Aroma** web application.  
+Handles business logic, user authentication and authorization, consumption of external APIs (Cloudinary), and data persistence in MongoDB.
 
 ---
 
-## 📦 Tecnologías y dependencias
+## 📦 Technologies and Dependencies
 
 ### Backend
 - **Framework:** Express 5
-- **Base de datos:** MongoDB (mongoose)
-- **Autenticación / Autorización:** JWT, cookies httpOnly, roles de usuario y administrador
-- **Almacenamiento de imágenes:** Cloudinary
-- **Correo:** Nodemailer
+- **Database:** MongoDB (mongoose)
+- **Authentication / Authorization:** JWT, httpOnly cookies, user and admin roles
+- **Image Storage:** Cloudinary
+- **Email:** Nodemailer
 - **Middleware:** cors, cookie-parser, multer
-- **Seguridad:** bcryptjs para hashing de contraseñas
-- **Configuración y entorno:** dotenv, tsconfig-paths
-- **TypeScript:** completamente tipado
-- **Herramientas de desarrollo:** ESLint, Prettier, TSX
+- **Security:** bcryptjs for password hashing
+- **Configuration & Environment:** dotenv, tsconfig-paths
+- **TypeScript:** fully typed
+- **Development Tools:** ESLint, Prettier, TSX
 
 ---
 
-## ⚡ Características principales
+## ⚡ Main Features
 
-### Roles y permisos
-- **Usuario**
-  - Acceso solo a la vista pública de productos, promociones y contacto
-- **Administrador**
-  - Acceso a todo lo del usuario
-  - CRUD de productos
-  - CRUD de promociones
-  - Gestión de imágenes en Cloudinary
-  - Control de usuarios y roles (si aplica)
+### Roles and Permissions
+- **User**
+  - Access only to the public view of products, promotions, and contact form
+- **Administrator**
+  - All features available to Users
+  - CRUD for products
+  - CRUD for promotions
+  - Manage images in Cloudinary
+  - User and role management (if applicable)
 
-### Funcionalidades adicionales
-- Consumo de APIs externas:
-  - **Cloudinary** para subir y eliminar imágenes
-  - **Nodemailer** para envío de correos desde el formulario de contacto
-- Seguridad con cookies httpOnly y JWT
-- Validaciones de datos y manejo de errores robusto
-- Seeders para datos iniciales (productos y promociones)
+### Additional Features
+- External API integrations:
+  - **Cloudinary** for uploading and deleting images
+  - **Nodemailer** for sending emails from the contact form
+- Security with httpOnly cookies and JWT
+- Data validation and robust error handling
+- Seeders for initial data (products and promotions)
 
 ---
 
-## 🚀 Instalación y ejecución
+## 🚀 Installation and Running
 
-1. Clonar el repositorio
+1. Clone the repository
 ```bash
-git clone https://github.com/tu-usuario/cafe-aroma-backend.git
+git clone https://github.com/your-username/cafe-aroma-backend.git
 cd cafe-aroma-backend
-```
-
-Variables importantes:
-
-MONGODB_URI
-
-JWT_SECRET
-
-CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
-
-EMAIL_USER, EMAIL_PASS (para Nodemailer)
