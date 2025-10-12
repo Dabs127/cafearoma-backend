@@ -107,7 +107,7 @@ export const loginUser = async (
     path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Evita bloqueos en local
     maxAge: 1000 * 60 * 60,
   });
 
@@ -115,7 +115,7 @@ export const loginUser = async (
     path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Evita bloqueos en local
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
@@ -201,14 +201,14 @@ export const registerUser = async (req: Request, res: Response) => {
   res.cookie("access_token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Evita bloqueos en local
     maxAge: 1000 * 60 * 60,
   });
 
   res.cookie("refresh_token", refresh_token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Evita bloqueos en local
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
@@ -272,7 +272,7 @@ export const refreshToken = async (req: Request, res: Response) => {
       path: "/",
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Evita bloqueos en local
       secure: process.env.NODE_ENV === "production",
     });
     res.status(200).json({
@@ -318,7 +318,7 @@ export const getUserById = async (req: AuthenticatedRequest, res: Response) => {
 
   try {
     const user = await User.findById(userId);
-    console.log(user)
+    console.log(user);
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
